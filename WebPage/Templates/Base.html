@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>HANDE BEBE</title>
+</head>
+<body style="background: #ED8AFF">
+<h1 id='S_Baslik' align="center" style="color: #FFFFFF; font-size:40px">HANDE BEBE</h1>
+<nav class="navbar" style="padding: 10px; text-align: center; font-size: 25px">
+    <a href="/Anasayfa" style="color: white">Anasayfa</a>
+    <a href="/Urunler" style="color: white">Ürünler</a>
+    <a href="/Hakkimizda" style="color: white">Hakkımızda</a>
+    <a href="/Iletisim" style="color: white">İletişim</a>
+</nav>
+<div align="right">
+    {% if user.is_authenticated %}
+    <p style="color: #FFFFFF">{{user.username}} <button onclick="window.location.href='http://127.0.0.1:8000/Cikis'">Çıkış Yap</button></p>
+    {% else %}
+    <button type="button" onclick="window.location.href='http://127.0.0.1:8000/Giris'">Giriş Yap</button>
+    <button type="button" onclick="window.location.href='http://127.0.0.1:8000/Uyeol'">Üye Ol</button>
+    {% endif %}
+</div>
+{% block content %}{% endblock %}
+</body>
+</html>
+
+

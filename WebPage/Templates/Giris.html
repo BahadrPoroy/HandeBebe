@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+<form action="" method="POST" align="center" style="color: white">
+    {% csrf_token %}
+    {{form.as_p}}
+    {{ message }}
+    <input type="submit" value="Giriş Yap">
+</form>
+{% endblock %}
