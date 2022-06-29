@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from .forms import *
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
 
 
 # Create your views here.
@@ -24,32 +25,33 @@ def iletisim(request):
 
 def uyeol(request):
     if request.method == "POST":
-        form = UserSigninForm(request.POST)
+        form = UserSignupForm(request.POST)
         if form.is_valid():
-            Customer = form.save(commit=False)
-            login(request, Customer)
-            Customer.save()
+            form.save()
+            username = form.cleaned_data.get("username")
+            raw_password = form.cleaned_data.get("password1")
+            user = authenticate(username=username, password=raw_password)
+            login(request, user)
             return redirect("http://127.0.0.1:8000/Anasayfa")
     else:
-        form = UserSigninForm()
+        form = UserSignupForm()
     return render(request, 'Uyeol.html', {'form': form})
 
 
 def giris(request):
+    form = UserLoginForm(request.POST or None)
     if request.method == "POST":
-        form = UserLoginForm(request.POST)
+
         if form.is_valid():
-            username = request.POST["username"]
-            password = request.POST["password"]
-            user = authenticate(request, username=username, password=password)
+            username = form.cleaned_data.get("username")
+            password = form.cleaned_data.get("password")
+            user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
                 return redirect("http://127.0.0.1:8000/Anasayfa")
             else:
                 messages.error(request, 'Kullanıcı adı ya da şifre hatalı')
                 return redirect("http://127.0.0.1:8000/Giris")
-    else:
-        form = UserLoginForm()
     return render(request, "Giris.html", {'form': form})
 
 
