@@ -23,24 +23,19 @@ def iletisim(request):
 
 
 def uyeol(request):
-    form = UserSigninForm()
     if request.method == "POST":
         form = UserSigninForm(request.POST)
         if form.is_valid():
-            Customer = form.save()
-            Customer.Username = form.Username
-            Customer.Password = form.Password
-            Customer.Email = form.Email
+            Customer = form.save(commit=False)
+            login(request, Customer)
             Customer.save()
-            messages.error(request, 'Başarıyla üye oldunuz')
-            return redirect("http://127.0.0.1:8000/Giris")
-        else:
-            form = UserSigninForm()
+            return redirect("http://127.0.0.1:8000/Anasayfa")
+    else:
+        form = UserSigninForm()
     return render(request, 'Uyeol.html', {'form': form})
 
 
 def giris(request):
-    form = UserLoginForm()
     if request.method == "POST":
         form = UserLoginForm(request.POST)
         if form.is_valid():
